@@ -1,16 +1,16 @@
 const express = require("express");
 const { check, validationResult } = require("express-validator");
-const WaterResourcesService = require("../services/waterresources");
-const WaterResource = require("../models/WaterResources");
+const WaterResourcesService = require("../services/waterresources2");
+const WaterResource2 = require("../models/WaterResources2");
 
 const router = express.Router();
 //app.use("/api/waterresources", router);
 
 router.get("/", async function (req, res) {
     try {
-        const waterResources = await WaterResource.find();
+        const waterResources2 = await WaterResource2.find();
         res.status(200);
-        res.send(waterResources);
+        res.send(waterResources2);
     } catch (error) {
         return res.status(500).json({ error: error.message });
     }
@@ -19,8 +19,8 @@ router.get("/", async function (req, res) {
 router.get("/:name", async function (req, res) {
     try {
         const { name } = req.params;
-        const waterResource = await WaterResourcesService.getResources({ name });
-        res.status(200).json(waterResource);
+        const waterResource2 = await WaterResourcesService.getResources({ name });
+        res.status(200).json(waterResource2);
     } catch (error) {
         return res.status(500).json({ error: error.message });
     }
@@ -29,8 +29,8 @@ router.get("/:name", async function (req, res) {
 router.get("/:name/date/", async function (req, res) {
     try {
         const { name } = req.params;
-        const waterResource = await WaterResourcesService.getResources({ name });
-        res.status(200).json(waterResource.date);
+        const waterResource2 = await WaterResourcesService.getResources({ name });
+        res.status(200).json(waterResource2.date);
     } catch (error) {
         return res.status(500).json({ error: error.message });
     }
@@ -39,8 +39,8 @@ router.get("/:name/date/", async function (req, res) {
 router.get("/:name/date/:index", async function (req, res) {
     try {
         const { name, index } = req.params;
-        const waterResource = await WaterResourcesService.getResources({ name });
-        res.status(200).json(waterResource.date[index]);
+        const waterResource2 = await WaterResourcesService.getResources({ name });
+        res.status(200).json(waterResource2.date[index]);
     } catch (error) {
         return res.status(500).json({ error: error.message });
     }
@@ -59,9 +59,9 @@ router.post(
             return res.status(400).json({ errors: errors.array() });
         }
         try {
-            const waterResource = new WaterResource(req.body);
+            const waterResource2 = new WaterResource2(req.body);
             const resorceId = await WaterResourcesService.createResources({
-                waterResource,
+                waterResource2,
             });
             return res
                 .status(200)
@@ -85,14 +85,14 @@ router.put(
         }
         try {
             const { waterResourcesId } = req.params;
-            const { body: waterResource } = req;
-            console.log(waterResource);
+            const { body: waterResource2 } = req;
+            console.log(waterResource2);
             const fuente = await WaterResourcesService.get({ waterResourcesId });
 
             if (fuente) {
                 const resorceId = await WaterResourcesService.updateResources({
                     waterResourcesId,
-                    waterResource,
+                    waterResource2,
                 });
                 return res.status(200).json({
                     resorceId: resorceId,
@@ -136,32 +136,32 @@ router.delete("/:waterResourcesId", async function (req, res) {
 router.delete("/:name/deleteValue/:index", async function (req, res) {
     try {
         const { name, index } = req.params;
-        const waterResource = await WaterResourcesService.getResources({ name });
+        const waterResource2 = await WaterResourcesService.getResources({ name });
 
 
-        if (waterResource && waterResource.valoracion) {
-            if (waterResource.valoracion.pH && waterResource.valoracion.pH.length > index) {
-                waterResource.valoracion.pH.splice(index, 1);
+        if (waterResource2 && waterResource2.valoracion) {
+            if (waterResource2.valoracion.pH && waterResource2.valoracion.pH.length > index) {
+                waterResource2.valoracion.pH.splice(index, 1);
             }else {
                 return res.status(400).json({ error: `Index ${index} is out of range for pH array` });
-            }if (waterResource.valoracion.conductivity && waterResource.valoracion.conductivity.length > index) {
-                waterResource.valoracion.conductivity.splice(index, 1);
+            }if (waterResource2.valoracion.conductivity && waterResource2.valoracion.conductivity.length > index) {
+                waterResource2.valoracion.conductivity.splice(index, 1);
             }else {
                 return res.status(400).json({ error: `Index ${index} is out of range for conductivity array` });
-            }if (waterResource.valoracion.turbidity && waterResource.valoracion.turbidity.length > index) {
-                waterResource.valoracion.turbidity.splice(index, 1);
+            }if (waterResource2.valoracion.turbidity && waterResource2.valoracion.turbidity.length > index) {
+                waterResource2.valoracion.turbidity.splice(index, 1);
             }else {
                 return res.status(400).json({ error: `Index ${index} is out of range for turbidity array` });
-            }if (waterResource.valoracion.temperature && waterResource.valoracion.temperature.length > index) {
-                waterResource.valoracion.temperature.splice(index, 1);
+            }if (waterResource2.valoracion.temperature && waterResource2.valoracion.temperature.length > index) {
+                waterResource2.valoracion.temperature.splice(index, 1);
             }else {
                 return res.status(400).json({ error: `Index ${index} is out of range for temperature array` });
-            }if (waterResource.valoracion.depth && waterResource.valoracion.depth.length > index) {
-                waterResource.valoracion.depth.splice(index, 1);
+            }if (waterResource2.valoracion.depth && waterResource2.valoracion.depth.length > index) {
+                waterResource2.valoracion.depth.splice(index, 1);
             }else {
                 return res.status(400).json({ error: `Index ${index} is out of range for depth array` });
-            }if (waterResource.date && waterResource.date.length > index) {
-                waterResource.date.splice(index, 1);
+            }if (waterResource2.date && waterResource2.date.length > index) {
+                waterResource2.date.splice(index, 1);
             }else {
                 return res.status(400).json({ error: `Index ${index} is out of range for date array` });
             }
@@ -172,7 +172,7 @@ router.delete("/:name/deleteValue/:index", async function (req, res) {
         
 
         // Save the updated water resource data
-        await waterResource.save();
+        await waterResource2.save();
 
         res.status(200).json({ message: `Values at index ${index} of ${name} deleted successfully` });
     } catch (error) {

@@ -1,14 +1,14 @@
-const WaterResource = require("../models/WaterResources");
+const WaterResource2 = require("../models/WaterResources2");
 const moment = require("moment");
 
 exports.getListResources = async () => {
-    await WaterResource.find({}).exec();
+    await WaterResource2.find({}).exec();
 };
 
 exports.getResources = async ({ name }) => {
     try {
-        const waterResource = await WaterResource.findOne({ name });
-        return waterResource; // Return the retrieved data
+        const waterResource2 = await WaterResource2.findOne({ name });
+        return waterResource2; // Return the retrieved data
     } catch (error) {
         throw error;
     }
@@ -24,22 +24,22 @@ exports.updateResources = async ({ waterResourceExists, valoracion}) => {
     waterResourceExists.valoracion.depth.push(valoracion.depth[0]);
     date_now = moment().subtract(5, 'hours').format("MMMM Do YYYY, h:mm:ss a");
     waterResourceExists.date.push(date_now)
-    await WaterResource.findOneAndUpdate(
+    await WaterResource2.findOneAndUpdate(
         { _id: waterResourceExists._id },
         { $set: waterResourceExists },
         { new: true }
     );
 };
 
-exports.createResources = async ({ waterResource }) => {
+exports.createResources = async ({ waterResource2 }) => {
     let createWaterResourceId = null;
-    const { name, valoracion } = waterResource;
-    const waterResourceExists = await WaterResource.findOne({ name });
+    const { name, valoracion } = waterResource2;
+    const waterResourceExists = await WaterResource2.findOne({ name });
     if (waterResourceExists) {
         createWaterResourceId = this.updateResources({ waterResourceExists, valoracion });
     } else {
-        waterResource.date[0] = moment().subtract(5, 'hours').format("MMMM Do YYYY, h:mm:ss a");
-        createWaterResourceId = await waterResource.save();
+        waterResource2.date[0] = moment().subtract(5, 'hours').format("MMMM Do YYYY, h:mm:ss a");
+        createWaterResourceId = await waterResource2.save();
     }
     return createWaterResourceId;
 };

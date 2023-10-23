@@ -50,4 +50,4 @@ const fuenteSchema = new mongoose.Schema({
     },
 });
 
-module.exports = mongoose.model("WaterResource", fuenteSchema);
+module.exports = mongoose.model("WaterResource2", fuenteSchema);
